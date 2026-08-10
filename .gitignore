@@ -1,0 +1,25 @@
+# Environment
+.env
+
+# Redmine persistent files
+redmine/files/*
+!redmine/files/.gitkeep
+
+# Backups
+backups/
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

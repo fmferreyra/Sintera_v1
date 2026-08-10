@@ -1,0 +1,72 @@
+services:
+
+  db:
+    image: postgres:14
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - sintera_internal
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  app:
+    image: redmine:7.0.0
+    restart: unless-stopped
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      REDMINE_DB_POSTGRES: ${REDMINE_DB_HOST}
+      REDMINE_DB_PORT: ${REDMINE_DB_PORT}
+      REDMINE_DB_DATABASE: ${REDMINE_DB_DATABASE}
+      REDMINE_DB_USERNAME: ${REDMINE_DB_USERNAME}
+      REDMINE_DB_PASSWORD: ${REDMINE_DB_PASSWORD}
+
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+
+      REDMINE_PLUGINS_MIGRATE: "true"
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - redmine_files:/usr/src/redmine/files
+      - ./redmine/plugins:/usr/src/redmine/plugins
+      - ./redmine/themes:/usr/src/redmine/public/themes
+
+    networks:
+      - sintera_internal
+
+
+networks:
+
+  sintera_internal:
+    driver: bridge
+
+
+volumes:
+
+  postgres_data:
+    name: sintera_postgres_data
+
+  redmine_files:
+    name: sintera_redmine_files
