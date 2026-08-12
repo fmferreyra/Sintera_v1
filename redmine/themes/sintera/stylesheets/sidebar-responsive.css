@@ -1,0 +1,137 @@
+@media (max-width: 1024px) {
+  body.sintera-has-side-menu #header {
+    background:
+      var(--sintera-primary) !important;
+
+    color:
+      var(--sintera-on-primary) !important;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      38px 1fr;
+
+    grid-template-rows:
+      auto;
+
+    align-items:
+      center;
+
+    gap:
+      8px;
+
+    padding:
+      10px 12px;
+
+    min-height:
+      62px;
+  }
+
+  body.sintera-has-side-menu #header h1 {
+    display:
+      block !important;
+
+    order:
+      initial;
+
+    grid-column:
+      2;
+
+    grid-row:
+      1;
+
+    flex:
+      1 1 auto;
+
+    margin:
+      0;
+
+    font-size:
+      20px;
+
+    line-height:
+      1.2;
+
+    font-weight:
+      700;
+
+    color:
+      #F2FAFF;
+
+    text-align:
+      center;
+
+    overflow:
+      hidden;
+
+    white-space:
+      nowrap;
+
+    text-overflow:
+      ellipsis;
+  }
+
+  body.sintera-has-side-menu #header h1 a,
+  body.sintera-has-side-menu #header h1 a:link,
+  body.sintera-has-side-menu #header h1 a:visited {
+    color:
+      #F2FAFF;
+  }
+
+  body.sintera-has-side-menu .sintera-menu-toggle {
+    grid-column:
+      1;
+
+    grid-row:
+      1;
+
+    margin-left:
+      0;
+  }
+
+  body.sintera-has-side-menu #header #quick-search {
+    display:
+      none;
+  }
+
+  body.sintera-has-side-menu #header #project-jump,
+  body.sintera-has-side-menu #header #project-jump * {
+    display:
+      none !important;
+  }
+
+  body.sintera-has-side-menu #top-menu .sintera-side-utilities {
+    display:
+      none !important;
+  }
+
+  body.sintera-has-side-menu #top-menu #quick-search,
+  body.sintera-has-side-menu #top-menu #quick-search * {
+    display:
+      none !important;
+  }
+
+  body.sintera-has-side-menu #top-menu .sintera-side-brand {
+    margin-top:
+      6px;
+  }
+
+  body.sintera-has-side-menu #content {
+    margin:
+      10px;
+
+    padding:
+      14px;
+
+    border-radius:
+      10px;
+  }
+
+  body.sintera-has-side-menu #top-menu {
+    box-shadow:
+      12px 0 26px rgba(11, 28, 39, 0.34);
+  }
+}
+
+/* ============================================================

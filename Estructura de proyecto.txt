@@ -1,0 +1,293 @@
+Estamos desarrollando una plataforma tipo CRM basado en redmine. La idea es poder realizar modificaciones, visualizarlas de manera local y una vez que validemos que 
+todo funciona correctamente subirlas al repositorio.
+
+En caso de eliminar el contenedor completo, la plataforma debe poder levantarse nuevamente en un nuevo contenedor docker y funcionar exactamente igual.
+
+Para modificar cualquier archivo, directorio, codigo de este repositorio se debe tener en cuenta la estructura mencionada abajo. Esto es porque el proyecto debe mantenerse facil de modificar y escalar. Adaptando tanto diseños, plugins e integraciones futuras.
+Todas las modificaciones realizadas deben poder persistir facilmente o adaptarse en caso de una actualizacion de la version de Redmine.
+El repositorio tiene que quedar listo para poder instalar docker en cualquier servidor y montar la plataforma tal cual la visualizabamos de manera local. Mateniendo siempre la vistas, estilos, estructura html, scripts, plugins, etc.
+La plataforma debe cumplir con estandares de calidad y seguridad de la informacion.
+Ademas debe mantener la estructura necesaria para poder actualizar la version de Redmine.
+Siempre debe mantener diseño responsive respetando colores, fuentes y formas.
+Ademas, en caso de que el cliente posea un dominio registrado, la plataforma debera ser capaz de adaptarse a ese dominio con https. En caso de que el cliente prefiera ingresar solo con la ip del servidor debe poder hacerlo tranquilamente.
+
+La plataforma debe mantener una identidad propia, para que la plataforma no se parezca a redmine. Debe tener personalidad de Sintera.
+
+Infraestructura actual
+C:\Users\Fede\Desarrollo\Sintera
+│
+├── compose.yaml
+├── .env
+├── .env.example
+├── .gitignore
+├── README.md
+│
+├── redmine/
+│   ├── files/
+│   ├── plugins/
+│   └── themes/
+│
+├── scripts/
+└── docs/
+Docker
+
+Tenemos dos containers independientes:
+
+                 SINTERA
+                   │
+             Docker Compose
+                   │
+        ┌──────────┴──────────┐
+        │                     │
+        ▼                     ▼
+   Redmine 7.0.0          PostgreSQL 14
+    Container               Container
+        │                     │
+        └──── Docker Network ─┘
+1. Redmine
+
+El container:
+
+redmine:7.0.0
+
+es nuestra aplicación.
+
+Está accesible desde Windows mediante:
+
+http://localhost:3000
+
+Pero Redmine no tiene acceso público a Internet por sí mismo. El puerto 3000 solamente está publicado en tu máquina.
+
+Más adelante será Sintera.
+
+2. PostgreSQL
+
+El segundo container:
+
+postgres:14
+
+es exclusivamente la base de datos.
+
+No publicamos:
+
+5432
+
+hacia Windows.
+
+Por lo tanto, PostgreSQL solamente es accesible desde la red interna de Docker:
+
+Redmine → db:5432 → PostgreSQL
+
+Eso es bueno desde el punto de vista de seguridad.
+
+Persistencia
+
+Los containers son desechables.
+
+Los datos no.
+
+Tenemos dos Docker volumes:
+
+sintera_postgres_data
+        │
+        └── base de datos
+
+
+sintera_redmine_files
+        │
+        └── archivos/adjuntos de Redmine
+
+Por eso:
+
+docker compose down
+docker compose up -d
+
+puede destruir y recrear los containers sin destruir los datos.
+
+En cambio:
+
+docker compose down -v
+
+sí elimina los volúmenes, por lo que en producción será un comando que prácticamente nunca deberemos utilizar sin una razón explícita.
+
+¿Qué contiene GitHub?
+
+El repositorio:
+
+github.com/fmferreyra/Sintera_v1
+
+contiene el producto y su infraestructura, no los datos del cliente.
+
+Por ejemplo:
+
+GitHub
+   │
+   ├── compose.yaml
+   ├── configuración
+   ├── plugins Sintera
+   ├── theme Sintera
+   ├── scripts
+   └── documentación
+
+Pero NO:
+
+GitHub
+   ├── PostgreSQL
+   ├── usuarios del cliente
+   ├── proyectos
+   ├── contraseñas
+   ├── adjuntos
+   └── datos reales
+
+Además .env queda fuera de Git porque contiene secretos.
+
+¿Cómo funcionaría en el futuro para un cliente?
+
+La idea es que el cliente tenga un servidor Windows o Linux con Docker.
+
+El proceso ideal será:
+
+Servidor cliente
+       │
+       ▼
+Instalar Docker
+       │
+       ▼
+Clonar Sintera
+       │
+       ▼
+Configurar .env
+       │
+       ▼
+docker compose up -d
+       │
+       ├── Sintera
+       │
+       └── PostgreSQL
+
+Y listo.
+
+El cliente no necesita instalar:
+
+Ruby
+Rails
+PostgreSQL
+Node
+Apache
+Nginx
+Redmine
+
+Todo lo necesario para ejecutar la aplicación estará encapsulado en Docker.
+
+¿Dónde entra Sintera?
+
+Ahora mismo:
+
+Redmine
+
+es prácticamente todo lo que ves.
+
+La próxima arquitectura será:
+
+                 SINTERA
+                    │
+          ┌─────────┴─────────┐
+          │                   │
+      Sintera Theme      Sintera Plugin
+          │                   │
+          └─────────┬─────────┘
+                    │
+                 Redmine
+                    │
+               PostgreSQL
+Theme
+
+Se encargará principalmente de:
+
+logo
+colores
+tipografía
+navegación
+login
+dashboard
+botones
+formularios
+tablas
+iconos
+footer
+
+Es lo que hará que visualmente deje de parecer Redmine.
+
+Plugin
+
+Será la capa donde empezaremos a poner funcionalidades propias de Sintera:
+
+nuevos menús
+dashboard
+funcionalidades
+configuración
+integraciones
+automatizaciones
+etc.
+
+Y, sobre todo, nos permitirá evitar modificar directamente el core de Redmine.
+
+La filosofía del proyecto
+
+Quiero que terminemos teniendo esto:
+
+                    SINTERA
+                      │
+       ┌──────────────┼──────────────┐
+       │              │              │
+    Branding       Funciones      Configuración
+       │              │              │
+       └──────────────┼──────────────┘
+                      │
+                   Redmine
+                      │
+                 PostgreSQL
+                      │
+                   Docker
+
+Redmine será el motor que nosotros aprovechamos, pero el cliente debe percibir Sintera como el producto.
+
+Y cuando llegue una actualización de Redmine, queremos poder hacer:
+
+Sintera 1.0
+   │
+   ├── Theme Sintera
+   ├── Plugin Sintera
+   └── Redmine 7.0.x
+
+y posteriormente:
+
+Sintera 1.1
+   │
+   ├── Theme Sintera
+   ├── Plugin Sintera
+   └── Redmine 7.0.y
+
+sin haber construido todo sobre modificaciones irreversibles del código de Redmine.
+
+Y una última cosa importante
+
+Todavía no tenemos una infraestructura de producción completa.
+
+Tenemos una base de desarrollo funcional.
+
+Antes de vender la primera instalación vamos a agregar:
+
+✓ Docker Compose
+✓ Redmine
+✓ PostgreSQL
+✓ Persistencia
+✓ Theme Sintera
+✓ Plugin Sintera
+→ Backup/restore
+→ configuración segura
+→ versiones fijadas
+→ actualización controlada
+→ instalación automatizada
+→ HTTPS/dominio
+→ documentación de despliegue

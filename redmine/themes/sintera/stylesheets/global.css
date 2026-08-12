@@ -1,0 +1,282 @@
+   2. GLOBAL
+   ============================================================ */
+
+html {
+  background:
+    var(--sintera-background);
+}
+
+body {
+  background:
+    var(--sintera-background);
+
+  color:
+    var(--sintera-text);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
+}
+
+
+/* ============================================================
+   3. LINKS
+   ============================================================ */
+
+a,
+a:link,
+a:visited {
+  color:
+    var(--sintera-primary);
+}
+
+a:hover {
+  color:
+    var(--sintera-accent);
+}
+
+a:focus-visible {
+  color:
+    var(--sintera-primary);
+
+  outline:
+    3px solid rgba(40, 127, 122, 0.35);
+
+  outline-offset:
+    2px;
+}
+
+
+/* ============================================================
+   4. HEADER
+   ============================================================ */
+
+#header {
+  background:
+    var(--sintera-primary);
+
+  color:
+    var(--sintera-on-primary);
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.10);
+
+  min-height:
+    60px;
+}
+
+
+/* Header headings */
+
+#header h1,
+#header h2,
+#header h3,
+#header h4,
+#header h5,
+#header h6 {
+  color:
+    var(--sintera-on-primary);
+}
+
+
+/* Header links */
+
+#header a,
+#header a:link,
+#header a:visited {
+  color:
+    var(--sintera-on-primary);
+}
+
+#header a:hover,
+#header a:focus {
+  color:
+    #FFFFFF;
+}
+
+
+/* ============================================================
+   5. TOP MENU
+   ============================================================ */
+
+#top-menu {
+  color:
+    var(--sintera-on-primary-muted);
+}
+
+#top-menu a,
+#top-menu a:link,
+#top-menu a:visited {
+  color:
+    var(--sintera-on-primary-muted);
+}
+
+#top-menu a:hover,
+#top-menu a:focus {
+  color:
+    #FFFFFF;
+}
+
+
+/* ============================================================
+   6. MAIN MENU
+   ============================================================ */
+
+/*
+ * Main Redmine navigation.
+ *
+ * This section intentionally targets the actual structure
+ * used by Redmine instead of generic "a" selectors.
+ *
+ * Normal:
+ *   muted light text
+ *
+ * Hover:
+ *   subtle translucent background
+ *
+ * Selected:
+ *   slightly stronger translucent background
+ *
+ */
+
+
+/* Main menu container */
+
+#main-menu {
+  background:
+    var(--sintera-primary);
+
+  color:
+    var(--sintera-on-primary);
+
+  border:
+    0;
+
+  box-shadow:
+    none;
+}
+
+
+/* Main menu list */
+
+#main-menu > ul {
+  background:
+    transparent;
+}
+
+#main-menu > ul > li {
+  background:
+    transparent;
+}
+
+
+/* ------------------------------------------------------------
+   Normal menu items
+   ------------------------------------------------------------ */
+
+#main-menu > ul > li > a,
+#main-menu > ul > li > a:link,
+#main-menu > ul > li > a:visited {
+  color:
+    var(--sintera-on-primary-muted) !important;
+
+  background:
+    transparent !important;
+
+  border:
+    0;
+
+  border-radius:
+    var(--sintera-radius-sm);
+
+  transition:
+    color var(--sintera-transition),
+    background-color var(--sintera-transition);
+
+  text-decoration:
+    none;
+}
+
+
+/* ------------------------------------------------------------
+   Hover
+   ------------------------------------------------------------ */
+
+#main-menu > ul > li > a:hover {
+  color:
+    #FFFFFF !important;
+
+  background:
+    rgba(255, 255, 255, 0.08) !important;
+
+  text-decoration:
+    none;
+}
+
+
+/* ------------------------------------------------------------
+   Focus
+   ------------------------------------------------------------ */
+
+#main-menu > ul > li > a:focus-visible {
+  color:
+    #FFFFFF !important;
+
+  background:
+    rgba(255, 255, 255, 0.10) !important;
+
+  outline:
+    2px solid rgba(255, 255, 255, 0.70);
+
+  outline-offset:
+    -2px;
+}
+
+
+/* ------------------------------------------------------------
+   Selected
+   ------------------------------------------------------------ */
+
+#main-menu > ul > li > a.selected,
+#main-menu > ul > li > a.current {
+  color:
+    #FFFFFF !important;
+
+  background:
+    rgba(255, 255, 255, 0.14) !important;
+
+  font-weight:
+    600;
+}
+
+
+/* ------------------------------------------------------------
+   Selected + hover
+   ------------------------------------------------------------ */
+
+#main-menu > ul > li > a.selected:hover,
+#main-menu > ul > li > a.current:hover {
+  color:
+    #FFFFFF !important;
+
+  background:
+    rgba(255, 255, 255, 0.18) !important;
+}
+
+
+/* ============================================================

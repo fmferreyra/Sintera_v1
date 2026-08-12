@@ -52,6 +52,7 @@ services:
       - redmine_files:/usr/src/redmine/files
       - ./redmine/plugins:/usr/src/redmine/plugins
       - ./redmine/themes:/usr/src/redmine/themes
+      - ./redmine/config/locales/es.yml:/usr/src/redmine/config/locales/es.yml
 
     networks:
       - sintera_internal

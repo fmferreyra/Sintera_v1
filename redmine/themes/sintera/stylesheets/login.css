@@ -1,0 +1,13 @@
+   LOGIN PAGE â€” hide sidebar entirely
+   ============================================================ */
+
+body.controller-account.action-login #top-menu,
+body.controller-account.action-login #header .sintera-menu-toggle {
+  display: none !important;
+}
+
+body.controller-account.action-login #header,
+body.controller-account.action-login #main,
+body.controller-account.action-login #footer {
+  margin-left: 0 !important;
+}
