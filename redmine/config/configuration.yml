@@ -1,0 +1,14 @@
+production:
+<% if ENV["SMTP_ADDRESS"].to_s.strip != "" %>
+  email_delivery:
+    delivery_method: :smtp
+    smtp_settings:
+      address: <%= ENV.fetch("SMTP_ADDRESS").inspect %>
+      port: <%= ENV.fetch("SMTP_PORT", "587").to_i %>
+      domain: <%= ENV.fetch("SMTP_DOMAIN", "").inspect %>
+      authentication: <%= ENV.fetch("SMTP_AUTHENTICATION", "login").to_sym.inspect %>
+      user_name: <%= ENV.fetch("SMTP_USER_NAME", "").inspect %>
+      password: <%= ENV.fetch("SMTP_PASSWORD", "").inspect %>
+      enable_starttls_auto: <%= ENV.fetch("SMTP_ENABLE_STARTTLS_AUTO", "true").downcase == "true" %>
+  email_from: <%= ENV.fetch("REDMINE_EMAIL_FROM", "").inspect %>
+<% end %>

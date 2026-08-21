@@ -45,10 +45,20 @@ services:
 
       REDMINE_PLUGINS_MIGRATE: "true"
 
+      SMTP_ADDRESS: ${SMTP_ADDRESS:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_DOMAIN: ${SMTP_DOMAIN:-}
+      SMTP_USER_NAME: ${SMTP_USER_NAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_AUTHENTICATION: ${SMTP_AUTHENTICATION:-login}
+      SMTP_ENABLE_STARTTLS_AUTO: ${SMTP_ENABLE_STARTTLS_AUTO:-true}
+      REDMINE_EMAIL_FROM: ${REDMINE_EMAIL_FROM:-}
+
     volumes:
       - redmine_files:/usr/src/redmine/files
       - ./redmine/plugins:/usr/src/redmine/plugins
       - ./redmine/themes:/usr/src/redmine/themes
+      - ./redmine/config/configuration.yml:/usr/src/redmine/config/configuration.yml
       - ./redmine/config/locales/es.yml:/usr/src/redmine/config/locales/es.yml
 
     networks:

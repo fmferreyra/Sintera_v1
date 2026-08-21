@@ -67,6 +67,29 @@ SECRET_KEY_BASE=<generar nueva>
 docker run --rm redmine:7.0.0 bin/rails secret
 ```
 
+### 4.0 Configurar correo SMTP (opcional)
+
+La configuración persistente de SMTP se realiza en `.env`; no es necesario editar archivos dentro del contenedor. Completar estas variables con los datos del proveedor de correo:
+
+```
+SMTP_ADDRESS=smtp.cliente.com
+SMTP_PORT=587
+SMTP_DOMAIN=cliente.com
+SMTP_USER_NAME=notificaciones@cliente.com
+SMTP_PASSWORD=<contraseña del correo>
+SMTP_AUTHENTICATION=login
+SMTP_ENABLE_STARTTLS_AUTO=true
+REDMINE_EMAIL_FROM=notificaciones@cliente.com
+```
+
+Si `SMTP_ADDRESS` queda vacío, las notificaciones por correo permanecen desactivadas. Después de configurar o modificar estos valores:
+
+```bash
+docker compose up -d --force-recreate app
+```
+
+La configuración vive en `redmine/config/configuration.yml` y se monta como solo lectura dentro de Redmine, mientras que las credenciales permanecen en `.env`.
+
 ### 4.1 Escenario A — Solo IP, sin dominio
 
 Dejar vacío:
