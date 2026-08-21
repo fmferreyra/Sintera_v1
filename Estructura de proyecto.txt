@@ -52,11 +52,11 @@ redmine:7.0.0
 
 es nuestra aplicación.
 
-Está accesible desde Windows mediante:
+En desarrollo y en instalaciones sin dominio, Sintera queda accesible mediante el proxy Caddy en:
 
 http://localhost:3000
 
-Pero Redmine no tiene acceso público a Internet por sí mismo. El puerto 3000 solamente está publicado en tu máquina.
+El contenedor de Redmine no publica ningún puerto directamente. Caddy recibe las solicitudes y las reenvía internamente a `app:3000`. En producción, el puerto publicado se configura en `.env`: `3000` para acceso por IP o `80/443` para un dominio con HTTPS.
 
 Más adelante será Sintera.
 

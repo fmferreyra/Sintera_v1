@@ -45,9 +45,6 @@ services:
 
       REDMINE_PLUGINS_MIGRATE: "true"
 
-    ports:
-      - "3000:3000"
-
     volumes:
       - redmine_files:/usr/src/redmine/files
       - ./redmine/plugins:/usr/src/redmine/plugins
@@ -72,8 +69,8 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
 
     ports:
-      - "80:80"
-      - "443:443"
+      - "${HTTP_PORT:-3000}:80"
+      - "${HTTPS_PORT:-3443}:443"
 
     volumes:
       - ./proxy/entrypoint.sh:/entrypoint.sh:ro

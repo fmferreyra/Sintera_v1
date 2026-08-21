@@ -5,7 +5,7 @@ Esta guía cubre cómo levantar Sintera desde cero en un servidor Debian, para d
 - **Escenario A:** el cliente accede solo por IP y puerto (sin dominio propio).
 - **Escenario B:** el cliente tiene un dominio propio y quiere HTTPS.
 
-La elección entre A y B se hace con **una sola variable en `.env`** (`DOMAIN_NAME`). El resto de los pasos es idéntico.
+La elección entre A y B se hace con `DOMAIN_NAME` y los puertos publicados en `.env`.
 
 ---
 
@@ -73,15 +73,19 @@ Dejar vacío:
 
 ```
 DOMAIN_NAME=
+HTTP_PORT=3000
+HTTPS_PORT=3443
 ```
 
-El proxy (Caddy) va a servir por HTTP en el puerto 80. Se accede con `http://IP_DEL_SERVIDOR`.
+El proxy (Caddy) va a servir por HTTP en el puerto 3000. Se accede con `http://IP_DEL_SERVIDOR:3000`. El puerto 3443 queda reservado para HTTPS alternativo y no es necesario utilizarlo en este escenario.
 
 ### 4.2 Escenario B — Con dominio propio
 
 ```
 DOMAIN_NAME=crm.cliente.com
 LETSENCRYPT_EMAIL=soporte@sintera.com
+HTTP_PORT=80
+HTTPS_PORT=443
 ```
 
 El proxy obtiene y renueva automáticamente el certificado HTTPS (Let's Encrypt) y redirige HTTP→HTTPS. Se accede con `https://crm.cliente.com`.
@@ -113,7 +117,7 @@ docker compose logs -f app
 
 Cuando `app` esté healthy y `proxy` sin errores:
 
-- Escenario A: entrar por `http://IP_DEL_SERVIDOR`.
+- Escenario A: entrar por `http://IP_DEL_SERVIDOR:3000`.
 - Escenario B: entrar por `https://crm.cliente.com` (puede tardar unos segundos el primer certificado).
 
 ---
@@ -125,7 +129,7 @@ sudo apt install -y ufw
 sudo ufw allow OpenSSH
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-sudo ufw deny 3000/tcp   # el puerto 3000 es solo para diagnostico/dev, no exponerlo en produccion
+sudo ufw allow 3000/tcp  # acceso por IP cuando no hay dominio
 sudo ufw enable
 ```
 

@@ -155,6 +155,7 @@ function ensureSideProfile(topMenu) {
 	var dropdown = account ? account.querySelector(".dropdown-content") : null;
 
 	if (!profileMenu || !dropdown) {
+		ensureAnonymousLogin(topMenu);
 		return;
 	}
 
@@ -228,6 +229,47 @@ function ensureSideProfile(topMenu) {
 
 	sideProfile.appendChild(head);
 	sideProfile.appendChild(actions);
+}
+
+function ensureAnonymousLogin(topMenu) {
+	var loginLink = topMenu.querySelector("a.login, a[href='/login'], a[href$='/login']");
+	var sideProfile = topMenu.querySelector(".sintera-side-profile");
+
+	if (!loginLink && sideProfile && sideProfile.classList.contains("sintera-side-login")) {
+		return;
+	}
+
+	if (!loginLink) {
+		return;
+	}
+
+	if (!sideProfile) {
+		sideProfile = document.createElement("section");
+		sideProfile.className = "sintera-side-profile sintera-side-login";
+		topMenu.appendChild(sideProfile);
+	}
+
+	sideProfile.innerHTML = "";
+
+	var actions = document.createElement("ul");
+	actions.className = "sintera-side-profile-actions";
+
+	var item = document.createElement("li");
+	var actionLink = loginLink.cloneNode(true);
+	actionLink.textContent = "Iniciar sesión";
+	actionLink.setAttribute("data-sintera-icon", "login");
+
+	item.appendChild(actionLink);
+	actions.appendChild(item);
+	sideProfile.appendChild(actions);
+
+	var originalItem = loginLink.closest("li");
+
+	if (originalItem) {
+		originalItem.remove();
+	} else {
+		loginLink.remove();
+	}
 }
 
 function disableActivitySidebarFeature() {
