@@ -58,6 +58,32 @@ services:
       - sintera_internal
 
 
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+
+    depends_on:
+      - app
+
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./proxy/entrypoint.sh:/entrypoint.sh:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+    networks:
+      - sintera_internal
+
+
 networks:
 
   sintera_internal:
@@ -71,3 +97,9 @@ volumes:
 
   redmine_files:
     name: sintera_redmine_files
+
+  caddy_data:
+    name: sintera_caddy_data
+
+  caddy_config:
+    name: sintera_caddy_config
